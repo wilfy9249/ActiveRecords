@@ -99,29 +99,31 @@ class model {
 
         $tableName = $this->getTablename();
         $array = get_object_vars($this);
-        print_r($array); echo '</br>';
+        //print_r($array); echo '</br>';
+
         $columnString = implode(',', array_flip($array));
         print_r($columnString);echo '</br>';
         $valueString = ':'.implode(',:', array_flip($array));
-        print_r($valueString);echo '</br>';
+        //print_r($valueString);echo '</br>';
         $sql =  'INSERT INTO '.$tableName.' ('.$columnString.') VALUES ('.$valueString.')';
         ECHO $sql;echo '</br>';
         return $sql;
     }
      private function update() {
-        //$sql = 'sometthing';
-        //return $sql;
 
-        //$db = dbConn::getConnection();
-        //$tableName = get_called_class();
-        //$array = get_object_vars($this);
-        //$columnString = implode(',', $array);
-        //$valueString = ":".implode(',:', $array);
-
-        //echo "INSERT INTO $tableName (" . $columnString . ") VALUES (" . $valueString . ")</br>";
-
-        echo "UPDATE". '</br>';
-
+         $tableName = $this->getTablename();
+         $array = get_object_vars($this);
+         $comma = " ";
+         $sql = 'UPDATE '.$tableName.' SET ';
+         foreach ($array as $key=>$value){
+             if( $value != null) {
+                 $sql .= $comma . $key . ' = "'. $value .'"';
+                 $comma = ", ";
+             }
+         }
+         $sql .= ' WHERE id='.$this->id;
+         echo $sql;
+         return $sql;
     }
 
      public function delete() {
@@ -130,7 +132,7 @@ class model {
 
          $db = dbConn::getConnection();
          $tableName = get_called_class();
-         $sql = 'DELETE FROM ' . $tableName .'s'. ' WHERE id ='. $this -> id;
+         $sql = 'DELETE FROM ' . $tableName .'s'. ' WHERE id ='. $this->id;
          echo $sql;
          $statement = $db->prepare($sql);
          $statement->execute();
@@ -186,7 +188,7 @@ $records = accounts::findAll();
 //print_r($record);
 
 
-echo "<h2>Insert One Record</h2>";
+echo "<h2>Insert Records</h2>";
 $record = new todo();
 $record->owneremail="testnjit.edu";
 $record->ownerid= "4";
@@ -195,6 +197,25 @@ $record->duedate="2017-06-01 00:00:00";
 $record->message="test data";
 $record->isdone= "1";
 $insertID = $record->save();
-ECHO $insertID;
+$records = todos::findAll();
+//ECHO $insertID;
+
+echo "<table  border=\"1\">";
+foreach($records as $key=>$row) {
+    echo "<tr>";
+    foreach($row as $key2=>$row2){
+        echo "<td>" . $row2 . "</td>";
+    }
+    echo "</tr>";
+}
+echo "</table>";
+
+echo "<h2>Update Records</h2>";
+$record = new todo();
+$record->id=2;
+$record->message="update data";
+$record->isdone= "1";
+$updateID = $record -> save();
+//ECHO $updateID;
 
 $records = todos::findAll();
