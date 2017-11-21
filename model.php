@@ -28,41 +28,32 @@ class model {
 
         $tableName = $this->getTablename();
         $array = get_object_vars($this);
-        //print_r($array); echo '</br>';
-
         $columnString = implode(',', array_flip($array));
-        print_r($columnString);echo '</br>';
         $valueString = ':'.implode(',:', array_flip($array));
-        //print_r($valueString);echo '</br>';
         $sql =  'INSERT INTO '.$tableName.' ('.$columnString.') VALUES ('.$valueString.')';
-        ECHO $sql;echo '</br>';
         return $sql;
     }
     private function update() {
 
         $tableName = $this->getTablename();
         $array = get_object_vars($this);
-        $comma = " ";
+        $space = " ";
         $sql = 'UPDATE '.$tableName.' SET ';
         foreach ($array as $key=>$value){
             if( $value != null) {
-                $sql .= $comma . $key . ' = "'. $value .'"';
-                $comma = ", ";
+                $sql .= $space . $key . ' = "'. $value .'"';
+                $space = ", ";
             }
         }
         $sql .= ' WHERE id='.$this->id;
-        echo $sql;
         return $sql;
     }
 
     public function delete() {
 
-        echo $this -> id;
-
         $db = dbConn::getConnection();
-        $tableName = get_called_class();
-        $sql = 'DELETE FROM ' . $tableName .'s'. ' WHERE id ='. $this->id;
-        echo $sql;
+        $tableName = $this->getTablename();
+        $sql = 'DELETE FROM ' . $tableName . ' WHERE id ='. $this->id;
         $statement = $db->prepare($sql);
         $statement->execute();
     }

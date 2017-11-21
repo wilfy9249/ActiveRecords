@@ -49,41 +49,23 @@ class main
 {
     public function __construct()
     {
-        // this would be the method to put in the index page for accounts
-       // $records = accounts::findAll();
-//print_r($records);
+        printHtmlTags::headingOne('Active Record Assignment');
+        printHtmlTags::horizontalRule();
 
-// this would be the method to put in the index page for todos
-//$records = todos::findAll();
-//print_r($records);
+        // SELECT ONE RECORD
+        printHtmlTags::headingOne('Select One Record');
+        $selectOneRecord = todos::findOne(1);
+        htmlTable::displayOneRecord($selectOneRecord);
+        printHtmlTags::horizontalRule();
 
-//this code is used to get one record and is used for showing one record or updating one record
-//$record = todos::findOne(1);
-//print_r($record);
+        //SELECT ALL RECORDS
+        printHtmlTags::headingOne('Select All Records');
+        $selectRecords = todos::findAll();
+        htmlTable::displayAllRecords($selectRecords);
+        printHtmlTags::horizontalRule();
 
-//$record = new todo();
-//$record -> id = 5;
-//$record -> delete();
-//$records = todos::delete(5 );
-//print_r($record);
-
-//this is used to save the record or update it (if you know how to make update work and insert)
-// $record->save();
-//$record = accounts::findOne(1);
-
-//This is how you would save a new todo item
-//$record = new todo();
-//$record -> id = '';
-//$record -> ownerid = 4;
-//$record-> message = 'some task';
-//$record-> isdone = 1;
-//$record-> save();
-//print_r($record);
-//$record = todos::create();
-//print_r($record);
-
-
-        echo "<h2>Insert Records</h2>";
+        //INSERT ONE RECORD
+        printHtmlTags::headingOne('Insert One Record');
         $record = new todo();
         $record->owneremail="testnjit.edu";
         $record->ownerid= "4";
@@ -93,24 +75,28 @@ class main
         $record->isdone= "1";
         $insertID = $record->save();
         $records = todos::findAll();
-//ECHO $insertID;
+        htmlTable::displayAllRecords($records);
+        printHtmlTags::horizontalRule();
 
-        echo "<table  border=\"1\">";
-        foreach($records as $key=>$row) {
-            echo "<tr>";
-            foreach($row as $key2=>$row2){
-                echo "<td>" . $row2 . "</td>";
-            }
-            echo "</tr>";
-        }
-        echo "</table>";
+        //UPDATE A RECORD
+        printHtmlTags::headingOne('Update a Record With Id :'.$insertID);
+        $updateRecord = new todo();
+        $updateRecord->id= $insertID;
+        $updateRecord->message="update data";
+        $updateRecord->isdone= "1";
+        $updateRecord -> save();
+        $updatedRecords = todos::findAll();
+        htmlTable::displayAllRecords($updatedRecords);
+        printHtmlTags::horizontalRule();
 
-        echo "<h2>Update Records</h2>";
-        $record = new todo();
-        $record->id=2;
-        $record->message="update data";
-        $record->isdone= "1";
-        $updateID = $record -> save();
+        //DELETE A RECORD
+        printHtmlTags::headingOne('Delete a Record With Id :'.$insertID);
+        $deleteRecord = new todo();
+        $deleteRecord-> id = $insertID;
+        $deleteRecord-> delete();
+        $deletedRecords = todos::findAll();
+        htmlTable::displayAllRecords($deletedRecords);
+        printHtmlTags::horizontalRule();
     }
 }
 

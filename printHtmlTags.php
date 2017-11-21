@@ -1,15 +1,16 @@
 <?php
+
 class printHtmlTags
 {
 
     static public function horizontalRule()
     {
-        return '<hr>';
+        echo '<hr>';
     }
 
     static public function headingOne($text)
     {
-        return '<h1>' . $text . '</h1>';
+        echo '<h1>' . $text . '</h1>';
     }
 }
 
