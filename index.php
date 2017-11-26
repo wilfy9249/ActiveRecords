@@ -1,49 +1,17 @@
 <?php
 
+//namespace ActiveRecords;
+
 class Manage {
     public static function autoload($class) {
         //you can put any file name or directory here
-        include $class . '.php';
+         include $class . '.php';
+        //require $class .'.php';
     }
 }
 spl_autoload_register(array('Manage', 'autoload'));
 
-//turn on debugging messages
-ini_set('display_errors', 'On');
-error_reporting(E_ALL);
-define('DATABASE', 'wc335');
-define('USERNAME', 'wc335');
-define('PASSWORD', 'ZxBEThIc');
-define('CONNECTION', 'sql1.njit.edu');
-
 $obj=new main();
-
-class dbConn{
-    //variable to hold connection object.
-    protected static $db;
-    //private construct - class cannot be instatiated externally.
-    private function __construct() {
-        try {
-            // assign PDO object to db variable
-            self::$db = new PDO( 'mysql:host=' . CONNECTION .';dbname=' . DATABASE, USERNAME, PASSWORD );
-            self::$db->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-        }
-        catch (PDOException $e) {
-            //Output error - would normally log this to error file rather than output to user.
-            echo "Connection Error: " . $e->getMessage();
-        }
-    }
-    // get connection function. Static method - accessible without instantiation
-    public static function getConnection() {
-        //Guarantees single instance, if no connection object exists then create one.
-        if (!self::$db) {
-            //new connection object.
-            new dbConn();
-        }
-        //return connection.
-        return self::$db;
-    }
-}
 
 class main
 {
